@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Website</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #111; color: #fff; }
+    header { padding: 20px; text-align: center; background-color: #222; }
+    .search-bar { margin: 20px auto; text-align: center; }
+    input { padding: 10px; width: 60%; border-radius: 5px; border: none; }
+    .movie-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
+    .movie { background-color: #222; padding: 10px; border-radius: 8px; width: 200px; text-align: center; }
+    .movie img { width: 100%; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Movie Website</h1>
+  </header>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search movies..." onkeyup="searchMovie()" />
+  </div>
+  <div class="movie-container" id="movieContainer">
+    <!-- Movies will appear here -->
+  </div>  <script>
+    const movies = [
+      { title: "Inception", image: "https://via.placeholder.com/200x300", year: "2010", trailer: "https://www.youtube.com/embed/YoHD9XEInc0" },
+      { title: "Avatar", image: "https://via.placeholder.com/200x300", year: "2009", trailer: "https://www.youtube.com/embed/5PSNL1qE6VY" },
+      { title: "Interstellar", image: "https://via.placeholder.com/200x300", year: "2014", trailer: "https://www.youtube.com/embed/zSWdZVtXT7E" },
+      { title: "The Matrix", image: "https://via.placeholder.com/200x300", year: "1999", trailer: "https://www.youtube.com/embed/vKQi3bBA1y8" }
+    ];
+
+    function displayMovies(movieList) {
+      const container = document.getElementById("movieContainer");
+      container.innerHTML = "";
+      movieList.forEach(movie => {
+        const movieDiv = document.createElement("div");
+        movieDiv.className = "movie";
+        movieDiv.innerHTML = `
+          <img src="${movie.image}" alt="${movie.title}" />
+          <h3>${movie.title}</h3>
+          <p>${movie.year}</p>
+          <button onclick=\"openTrailer('${movie.trailer}')\">Watch Trailer</button>
+        `;
+        container.appendChild(movieDiv);
+      });
+    }
+
+    function searchMovie() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const filteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(query));
+      displayMovies(filteredMovies);
+    }
+
+    // Initial load
+    displayMovies(movies);
+  </script>  <!-- Trailer Modal -->  <div id="trailerModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center;">
+    <div style="position:relative; width:80%; max-width:800px;">
+      <iframe id="trailerFrame" width="100%" height="450" frameborder="0" allowfullscreen></iframe>
+      <button onclick="closeTrailer()" style="position:absolute; top:10px; right:10px; padding:5px 10px;">Close</button>
+    </div>
+  </div>  <script>
+    function openTrailer(url) {
+      document.getElementById('trailerFrame').src = url;
+      document.getElementById('trailerModal').style.display = 'flex';
+    }
+
+    function closeTrailer() {
+      document.getElementById('trailerFrame').src = '';
+      document.getElementById('trailerModal').style.display = 'none';
+    }
+  </script></body>
+</html>
